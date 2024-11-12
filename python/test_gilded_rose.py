@@ -86,6 +86,15 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(45, items[0].quality)
         self.assertEqual(4, items[0].sell_in)
 
+    def test_back_stage_ticket_quality_after_0_days(self):
+        item_type = "Backstage passes to a TAFKAL80ETC concert"
+        items = [Item(item_type, sell_in=0, quality=42)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual(item_type, items[0].name)
+        self.assertEqual(0, items[0].quality)
+        self.assertEqual(-1, items[0].sell_in)
+
 class ItemTest(unittest.TestCase):
     def test_item(self):
         item = Item("foo", 0, 0)
