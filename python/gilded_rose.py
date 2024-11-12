@@ -7,6 +7,18 @@ def _handle_aged_brie(item):
     if item.sell_in < 0 and item.quality < 50:
         item.quality += 1
 
+def _handle_backstage_pass(item):
+    if item.sell_in <= 0:
+        item.quality = 0
+    elif item.sell_in <= 5:
+        item.quality += 3
+    elif item.sell_in <= 10:
+        item.quality += 2
+    elif item.quality < 50:
+        item.quality += 1
+
+    item.sell_in -= 1
+
 class GildedRose(object):
 
     def __init__(self, items):
@@ -16,6 +28,9 @@ class GildedRose(object):
         for item in self.items:
             if item.name == "Aged Brie":
                 _handle_aged_brie(item)
+                return
+            elif item.name == "Backstage passes to a TAFKAL80ETC concert":
+                _handle_backstage_pass(item)
                 return
 
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
