@@ -19,6 +19,9 @@ def _handle_backstage_pass(item):
 
     item.sell_in -= 1
 
+def _handle_sulfuras(item):
+    pass
+
 class GildedRose(object):
 
     def __init__(self, items):
@@ -31,6 +34,9 @@ class GildedRose(object):
                 return
             elif item.name == "Backstage passes to a TAFKAL80ETC concert":
                 _handle_backstage_pass(item)
+                return
+            elif item.name == "Sulfuras, Hand of Ragnaros":
+                _handle_sulfuras(item)
                 return
 
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
