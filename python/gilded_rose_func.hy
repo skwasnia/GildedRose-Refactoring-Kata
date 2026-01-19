@@ -1,3 +1,4 @@
+; * Item -> Item (via mutation): Mutation is just an implicit state monad.
 (defn inc-quality-n [item n 1]
     (setv (. item quality)
         (min
@@ -17,6 +18,7 @@
     (setv (. item sell_in) (- (. item sell_in) 1))
 )
 
+; * Build types with AND: item has name AND sell_in AND quality.
 (defn dec-quality-when-sell-in [item]
     (when (< (. item sell_in) 0)
         (dec-quality item)
@@ -29,12 +31,16 @@
     )
 )
 
+; * Sequential composition: combine small functions to build bigger ones -
+;   monoidal composition of transformations - which becomes monadic sequencing
+;   when effects are involved.
 (defn decrease-normal [item]
     (dec-quality item)
     (dec-sell-in item)
     (dec-quality-when-sell-in item)
 )
 
+; * "Types are not classes": We separated what the data is from how it changes.
 (defn decrease-aged-brie [item]
     (inc-quality item)
     (dec-sell-in item)
@@ -83,6 +89,7 @@
 )
 
 (setv apply-behavior
+    ; * Build types with OR: item behavior chosen based on name
     (make-apply-behavior
         {
             "Aged Brie" decrease-aged-brie
@@ -92,6 +99,7 @@
     )
 )
 
+; * Tunnel of transformation - Lists support map/sequence - monadic behavior
 (defn update-quality [items]
     (for [item items]
         (apply-behavior item)
